@@ -66,8 +66,6 @@ void SV_CalcStats(client_t *client, int *statsi, float *statsf, const char **sta
 	statsf[STAT_CELLS] = ent->v.ammo_cells;
 	statsf[STAT_ACTIVEWEAPON] = ent->v.weapon;	//sent in a way that does NOT depend upon the current mod...
 
-	//FIXME: add support for clientstat/globalstat qc builtins.
-
 	for (i = 0; i < sv.numcustomstats; i++)
 	{
 		eval_t *eval = sv.customstats[i].ptr;

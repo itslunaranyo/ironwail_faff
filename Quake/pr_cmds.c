@@ -3451,6 +3451,20 @@ static void PF_clientstat(void)
 		return;
 	stat->fld = fldofs;
 }
+static void PF_globalstat(void)
+{
+	int idx = G_FLOAT(OFS_PARM0);
+	int type = G_FLOAT(OFS_PARM1);
+	const char* name = G_STRING(OFS_PARM2);
+	struct svcustomstat_s* stat = PR_CustomStat(idx, type);
+	if (!stat)
+		return;
+
+	ddef_t* def = ED_FindGlobal(name);
+	if (!def)
+		return;
+	stat->ptr = (eval_t*)(qcvm->globals + def->ofs);
+}
 
 //server/client stuff
 static void PF_checkcommand(void)
@@ -3602,6 +3616,7 @@ builtindef_t pr_builtindefs[] =
 	{"strconv",					PF_BOTH(PF_strconv),			224,	FTE_STRINGS},	// string(float ccase, float redalpha, float redchars, string str, ...)
 
 	{"clientstat",				PF_SSQC(PF_clientstat),			232},	// void(float num, float type, .__variant fld)
+	{"globalstat",				PF_SSQC(PF_globalstat),			233},	// void(float num, float type, string name)
 
 	{"mod",						PF_BOTH(PF_mod),				245},	// float(float a, float n)
 
